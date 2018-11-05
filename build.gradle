@@ -54,6 +54,9 @@ dependencies {
 
 	compile 'javax.servlet:javax.servlet-api:3.1.0'
 
+	compile 'org.projectlombok:lombok:1.16.18'
+	compile 'org.eclipse.collections:eclipse-collections:9.2.0'
+
 //	providedCompile 'org.slf4j:jul-to-slf4j'
 
 //	runtimeOnly('mysql:mysql-connector-java')
