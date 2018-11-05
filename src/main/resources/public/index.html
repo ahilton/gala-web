@@ -1,1 +1,97 @@
-hello gala etc...
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+    <!--<meta name="theme-color" content="#000000">-->
+
+<!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.19/b-1.5.4/sl-1.2.7/datatables.min.css"/>--
+
+    <!--dt 19-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css"/>-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.4/css/buttons.dataTables.min.css"/>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.7/css/select.dataTables.min.css"/>
+
+    <link rel="stylesheet" type="text/css" href="Editor-1.8.0/css/editor.dataTables.css">
+
+
+    <!--<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.19/b-1.5.4/sl-1.2.7/datatables.min.js"></script>-->
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <!--dt 19-->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/dataTables.buttons.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+
+    <script type="text/javascript" src="Editor-1.8.0/js/dataTables.editor.js"></script>
+
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/b-1.5.4/r-2.2.2/sl-1.2.6/datatables.min.css"/>-->
+    <!---->
+    <!--<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/b-1.5.4/r-2.2.2/sl-1.2.6/datatables.min.js"></script>-->
+
+
+
+
+
+
+</head>
+<body>
+
+<!--https://cdn.datatables.net/v/dt/-->
+<!--jqc-1.12.3/ &ndash;&gt; jquery-->
+<!--dt-1.10.19/ &ndash;&gt; done-->
+<!--b-1.5.4/-->
+<!--sl-1.2.7/ &ndash;&gt; select-->
+<!--datatables.min.css-->
+
+<!--https://cdn.datatables.net/v/dt/-->
+<!--jqc-1.12.3/ &ndash;&gt; jquery-->
+<!--dt-1.10.19/ &ndash;&gt; done-->
+<!--b-1.5.4/-->
+<!--sl-1.2.7/ &ndash;&gt; select-->
+<!--datatables.min.js">-->
+
+<!--hello gala etc...-->
+
+<table id="myTable"></table>
+
+<script type="text/javascript">
+    var editor = new $.fn.dataTable.Editor( {
+        ajax:  '/api/staff',
+        table: '#myTable',
+        fields: [
+            { label: 'First name', name: 'first_name' },
+            { label: 'Last name',  name: 'last_name'  },
+            // etc
+        ]
+    } );
+
+    $('#myTable').DataTable( {
+        ajax: '/api/staff',
+        dom: 'Bfrtip',
+        columns: [
+            { data: 'first_name' },
+            { data: 'last_name' },
+            // etc
+        ],
+        select: true,
+        buttons: [
+            { extend: 'create', editor: editor },
+            { extend: 'edit',   editor: editor },
+            { extend: 'remove', editor: editor }
+        ]
+    } );
+</script>
+
+</body>
+</html>
