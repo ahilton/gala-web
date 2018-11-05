@@ -46,27 +46,37 @@ public class FundraiseController {
         log.info("Received delete request for id: [{}]", id);
         FundraiseAmount toDelete = FundraiseAmount.builder().amount(amount).category(category).name(name).build();
         log.info("Params: {}", toDelete);
+        amounts.removeIf(x -> x.getId().equals(id));
     }
 
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void updateFundRaisingState(
+    public CreationUpdateResponse updateFundRaisingState(
             @PathParam("id") String id,
             @FormParam("name") String name,
             @FormParam("category") String category,
             @FormParam("amount") int amount
     ) {
         log.info("Received update request for id: [{}]", id);
-        FundraiseAmount toUpdate = FundraiseAmount.builder().amount(amount).category(category).name(name).build();
-        log.info("Params: {}", toUpdate);
+        FundraiseAmount update = FundraiseAmount.builder().amount(amount).category(category).name(name).build();
+        log.info("Params: {}", update);
+
+        FundraiseAmount toUpdate = amounts.detect(x -> x.getId().equals(id));
+        // TODO:: return error if not exists (share with delete code)
+        log.info("Before update: {}", toUpdate);
+        toUpdate.setName(update.getName());
+        toUpdate.setCategory(update.getCategory());
+        toUpdate.setAmount(update.getAmount());
+        log.info("After update: {}", toUpdate);
+        return buildResponse(toUpdate);
     }
 
     @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(APPLICATION_JSON)
-    public CreationResponse createFundRaisingState(
+    public CreationUpdateResponse createFundRaisingState(
             @FormParam("name") String name,
             @FormParam("category") String category,
             @FormParam("amount") int amount
@@ -74,12 +84,16 @@ public class FundraiseController {
         FundraiseAmount newObj = FundraiseAmount.builder().amount(amount).category(category).name(name).build();
         log.info("Received create request: [{}]", newObj);
         amounts.add(newObj);
-        return CreationResponse.builder().data(Lists.mutable.of(newObj)).build();
+        return buildResponse(newObj);
+    }
+
+    private CreationUpdateResponse buildResponse(FundraiseAmount newObj) {
+        return CreationUpdateResponse.builder().data(Lists.mutable.of(newObj)).build();
     }
 
     @Data
     @Builder
-    private static class CreationResponse {
+    private static class CreationUpdateResponse {
         private List<FundraiseAmount> data;
     }
 
