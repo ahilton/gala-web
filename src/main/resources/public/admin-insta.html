@@ -50,37 +50,26 @@
         <legend>Name</legend>
         <editor-field name="thumbnailUrl"></editor-field>
     </fieldset>
-
 </div>
 
 <script type="text/javascript">
-
-    //    function buildFundraiseData(rawData) {
-    //        var id = Object.keys(rawData.data)[0];
-    //        return {
-    //            'name': rawData.data[id]['name'],
-    //            'category': rawData.data[id]['category'],
-    //            'amount': rawData.data[id]['amount']
-    //        }
-    //    }
 
 
     var editor = new $.fn.dataTable.Editor({
         ajax: {
             create: {
                 type: 'POST',
-                url: 'stubbedOut',
-                deleteBody: false,
+                url: 'stubbedOut'
             },
             edit: {
                 type: 'PUT',
                 url: '/api/insta/approve/_id_',
-                deleteBody: false,
+                deleteBody: false
             },
             remove: {
                 type: 'DELETE',
                 url: '/api/insta/reject/_id_',
-                deleteBody: false,
+                deleteBody: false
             }
         },
         template: '#customForm',
@@ -93,12 +82,7 @@
                 render: function (data, type, set) {
                     return '<img  src="' + data + '" style="width:400px; height:400px"/>';
                 }
-//                data: 'true',
-//                options: [
-//                    {label: "Approved", value: 1}
-//                ]
             }
-            // etc
         ]
     });
 
@@ -110,9 +94,6 @@
             title: 'Approve post',
             buttons: 'APPROVE'
         });
-
-        //reload
-
     });
 
     // Delete a record
@@ -149,9 +130,6 @@
         },
         responsive: true,
         dom: 'Bfrtip',
-//        columns: [
-//            {data: 'thumbnailUrl'}
-//        ],
         select: true,
         buttons: [
             {extend: 'create', editor: editor},
@@ -161,6 +139,7 @@
     });
 
 
+    // hack something to push preview image to approval form
     editor.on('initEdit', function (e, node, data, items, type) {
         $("#crazy").append("<img  src='" + data.thumbnailUrl + "' style='width:300px; height:300px'/>")
     });
@@ -168,18 +147,176 @@
         $("#imageHolder").empty()
         $("#crazy").children(":first").detach().appendTo($("#imageHolder"))
     });
-//    editor.on('edit', function (e, json, data, id) {
-////        table.ajax.reload();
-//        console.log("I need to reload!")
-//    });
+
+    // force reload after edit request has been submitted
     editor.on('postSubmit', function (e, json, data, id) {
         table.ajax.reload();
-        console.log("postSubmit")
     });
-    editor.on('submitError', function (e, json, data, id) {
-//        table.ajax.reload();
-        console.log("error")
+
+</script>
+
+
+<h3>
+    Approved posts
+</h3>
+<table id="approvedTable" style="width:101%">
+</table>
+<h3>
+    Rejected posts
+</h3>
+<table id="rejectedTable" style="width:101%">
+</table>
+
+<script type="text/javascript">
+
+
+    var approvedEditor = new $.fn.dataTable.Editor({
+        ajax: {
+            create: {
+                type: 'POST',
+                url: 'stubbedOut'
+            },
+            edit: {
+                type: 'PUT',
+                url: 'stubbedOut'
+            },
+            remove: {
+                type: 'DELETE',
+                url: '/api/insta/reject/_id_',
+                deleteBody: false
+            }
+        },
+        idSrc: 'id',
+        table: '#approvedTable',
+        fields: [
+            {
+                label: 'Imange',
+                name: 'thumbnailUrl',
+                render: function (data, type, set) {
+                    return '<img  src="' + data + '" style="width:400px; height:400px"/>';
+                }
+            }
+        ]
     });
+
+    // Delete a record
+    $('#approvedTable').on('click', 'a.editor_remove', function (e) {
+        e.preventDefault();
+
+        approvedEditor.remove($(this).closest('tr'), {
+            title: 'Reject post',
+            message: 'Are you sure you wish to reject?',
+            buttons: 'REJECT'
+        });
+    });
+
+    $('#approvedTable').DataTable({
+        columnDefs: [
+            {
+                "targets": 0,
+                "data": "thumbnailUrl",
+                "render": function (data, type, row, meta) {
+                    return '<img  src="' + data + '" style="width:200px; height:200px"/>';
+                }
+            },
+            {"targets": 1,
+                "data": "id"},
+            {
+                "targets": 2,
+                data: null,
+                className: "center",
+                defaultContent: '<a href="" class="editor_remove">Reject</a>'
+            }
+        ],
+        ajax: {
+            url: '/api/insta/approved',
+            dataSrc: ''
+        },
+        responsive: true,
+        dom: 'Bfrtip',
+        select: true,
+        buttons: [
+            {extend: 'create', editor: approvedEditor},
+            {extend: 'edit', editor: approvedEditor},
+            {extend: 'remove', editor: approvedEditor}
+        ]
+    });
+
+
+
+    var rejectedEditor = new $.fn.dataTable.Editor({
+        ajax: {
+            create: {
+                type: 'POST',
+                url: 'stubbedOut'
+            },
+            edit: {
+                type: 'PUT',
+                url: 'stubbedOut'
+            },
+            remove: {
+                type: 'PUT',
+                url: '/api/insta/approve/_id_',
+                deleteBody: false
+            }
+        },
+        idSrc: 'id',
+        table: '#rejectedTable',
+        fields: [
+            {
+                label: 'Imange',
+                name: 'thumbnailUrl',
+                render: function (data, type, set) {
+                    return '<img  src="' + data + '" style="width:400px; height:400px"/>';
+                }
+            }
+        ]
+    });
+
+    // Delete a record
+    $('#rejectedTable').on('click', 'a.editor_remove', function (e) {
+        e.preventDefault();
+
+        rejectedEditor.remove($(this).closest('tr'), {
+            title: 'Approve post',
+            message: 'Are you sure you wish to approve?',
+            buttons: 'APPROVE'
+        });
+    });
+
+    $('#rejectedTable').DataTable({
+        columnDefs: [
+            {
+                "targets": 0,
+                "data": "thumbnailUrl",
+                "render": function (data, type, row, meta) {
+                    return '<img  src="' + data + '" style="width:200px; height:200px"/>';
+                }
+            },
+            {"targets": 1,
+                "data": "id"},
+            {
+                "targets": 2,
+                data: null,
+                className: "center",
+                defaultContent: '<a href="" class="editor_remove">Approve</a>'
+            }
+        ],
+        ajax: {
+            url: '/api/insta/rejected',
+            dataSrc: ''
+        },
+        responsive: true,
+        dom: 'Bfrtip',
+        select: true,
+        buttons: [
+            {extend: 'create', editor: approvedEditor},
+            {extend: 'edit', editor: approvedEditor},
+            {extend: 'remove', editor: approvedEditor}
+        ]
+    });
+
+
 </script>
 
 </body>

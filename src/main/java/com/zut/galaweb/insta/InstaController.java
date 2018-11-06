@@ -44,16 +44,20 @@ public class InstaController {
     @Path("/approved")
     @Produces(APPLICATION_JSON)
     @CrossOrigin
-    public List<String> getApprovedIds() {
-        return instaCache.getApproved();
+    public List<InstaPost> getApprovedPosts() {
+        MutableList<String> approved = instaCache.getApproved();
+        return instaCache.getAllPosts()
+                .select(x -> approved.contains(x.getId()));
     }
 
     @GET
     @Path("/rejected")
     @Produces(APPLICATION_JSON)
     @CrossOrigin
-    public List<String> getRejectedIds() {
-        return instaCache.getRejected();
+    public List<InstaPost> getRejectedPosts() {
+        MutableList<String> rejected = instaCache.getRejected();
+        return instaCache.getAllPosts()
+                .select(x -> rejected.contains(x.getId()));
     }
 
     @PUT
