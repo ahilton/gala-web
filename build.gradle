@@ -56,6 +56,8 @@ dependencies {
 
 	compile 'org.projectlombok:lombok:1.16.18'
 	compile 'org.eclipse.collections:eclipse-collections:9.2.0'
+	compile 'org.jsoup:jsoup:1.10.2'
+	compile 'org.json:json:20180813'
 
 //	providedCompile 'org.slf4j:jul-to-slf4j'
 
