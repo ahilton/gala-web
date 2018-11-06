@@ -9,6 +9,7 @@ import java.util.UUID;
 @Builder
 public class FundraiseAmount {
 
+    @Builder.Default
     private final String id = UUID.randomUUID().toString();
 
     private String name;

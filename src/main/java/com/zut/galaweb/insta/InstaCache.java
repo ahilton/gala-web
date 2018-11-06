@@ -19,6 +19,12 @@ public class InstaCache {
     private final List<String> approvedPosts = new CopyOnWriteArrayList<>();
     private final List<String> rejectedPosts = new CopyOnWriteArrayList<>();
 
+    public void reset() {
+        allPosts.clear();
+        approvedPosts.clear();
+        rejectedPosts.clear();
+    }
+
     public void addPost(InstaPost post) {
         if (!allPosts.contains(post)) {
             allPosts.add(post);
@@ -26,23 +32,23 @@ public class InstaCache {
         printCacheState();
     }
 
-    public void approvePost(InstaPost post) {
-        rejectedPosts.remove(post.getId());
-        if (!approvedPosts.contains(post.getId())) {
-            approvedPosts.add(post.getId());
+    public void approvePost(String id) {
+        rejectedPosts.remove(id);
+        if (!approvedPosts.contains(id)) {
+            approvedPosts.add(id);
         }
         printCacheState();
     }
 
-    public void rejectPost(InstaPost post) {
-        approvedPosts.remove(post.getId());
-        if (!rejectedPosts.contains(post.getId())) {
-            rejectedPosts.add(post.getId());
+    public void rejectPost(String id) {
+        approvedPosts.remove(id);
+        if (!rejectedPosts.contains(id)) {
+            rejectedPosts.add(id);
         }
         printCacheState();
     }
 
-    public List<InstaPost> getAllPosts() {
+    public MutableList<InstaPost> getAllPosts() {
         return Lists.mutable.ofAll(allPosts);
     }
 

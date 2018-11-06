@@ -1,6 +1,7 @@
 package com.zut.galaweb.insta;
 
 import com.zut.galaweb.dto.InstaPost;
+import com.zut.galaweb.galaconfig.GalaConfigCache;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,17 +18,17 @@ import java.util.Iterator;
 @Slf4j
 public class FundraisingWebScraper {
 
-    // TODO:: move to gala config class
-    private final static String searchTag = "avasjourney";
+    @Autowired
+    private GalaConfigCache configCache;
 
     @Autowired
     private InstaCache cache;
 
     @Scheduled(fixedRate = 63040)
     public void pollDonations() throws IOException {
-        log.info("Polling donations...");
-
-        Document doc = Jsoup.connect("https://www.instagram.com/explore/tags/" + searchTag + "/?__a=1")
+        String instaTag = configCache.getInstaTag();
+        log.info("Polling instagram posts with tag [{}]...", instaTag);
+        Document doc = Jsoup.connect("https://www.instagram.com/explore/tags/" + instaTag + "/?__a=1")
                 .ignoreContentType(true)
                 .userAgent("Mozilla")
                 .timeout(5000)

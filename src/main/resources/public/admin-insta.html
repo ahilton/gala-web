@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+
+    <!--dt 19-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/buttons/1.5.4/css/buttons.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/select/1.2.7/css/select.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="Editor-1.8.0/css/editor.dataTables.css">
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <!--dt 19-->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="Editor-1.8.0/js/dataTables.editor.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/responsive/2.2.2/js/dataTables.responsive.min.js"></script>
+
+</head>
+<body>
+
+
+<h3>
+    Instagram Approval
+</h3>
+<div id="crazy">
+
+</div>
+<table id="myTable" style="width:101%">
+
+</table>
+
+
+<div id="customForm">
+    <fieldset class="name">
+        <div id="imageHolder"></div>
+        <legend>Name</legend>
+        <editor-field name="thumbnailUrl"></editor-field>
+    </fieldset>
+
+</div>
+
+<script type="text/javascript">
+
+    //    function buildFundraiseData(rawData) {
+    //        var id = Object.keys(rawData.data)[0];
+    //        return {
+    //            'name': rawData.data[id]['name'],
+    //            'category': rawData.data[id]['category'],
+    //            'amount': rawData.data[id]['amount']
+    //        }
+    //    }
+
+
+    var editor = new $.fn.dataTable.Editor({
+        ajax: {
+            create: {
+                type: 'POST',
+                url: 'stubbedOut',
+                deleteBody: false,
+            },
+            edit: {
+                type: 'PUT',
+                url: '/api/insta/approve/_id_',
+                deleteBody: false,
+            },
+            remove: {
+                type: 'DELETE',
+                url: '/api/insta/reject/_id_',
+                deleteBody: false,
+            }
+        },
+        template: '#customForm',
+        idSrc: 'id',
+        table: '#myTable',
+        fields: [
+            {
+                label: 'Imange',
+                name: 'thumbnailUrl',
+                render: function (data, type, set) {
+                    return '<img  src="' + data + '" style="width:400px; height:400px"/>';
+                }
+//                data: 'true',
+//                options: [
+//                    {label: "Approved", value: 1}
+//                ]
+            }
+            // etc
+        ]
+    });
+
+    // Edit record
+    $('#myTable').on('click', 'a.editor_edit', function (e) {
+        e.preventDefault();
+
+        editor.edit($(this).closest('tr'), {
+            title: 'Approve post',
+            buttons: 'APPROVE'
+        });
+
+        //reload
+
+    });
+
+    // Delete a record
+    $('#myTable').on('click', 'a.editor_remove', function (e) {
+        e.preventDefault();
+
+        editor.remove($(this).closest('tr'), {
+            title: 'Reject post',
+            message: 'Are you sure you wish to reject?',
+            buttons: 'DELETE'
+        });
+    });
+
+
+    var table = $('#myTable').DataTable({
+        columnDefs: [
+            {
+                "targets": 0,
+                "data": "thumbnailUrl",
+                "render": function (data, type, row, meta) {
+                    return '<img  src="' + data + '" style="width:200px; height:200px"/>';
+                }
+            },
+            {
+                "targets": 1,
+                data: null,
+                className: "center",
+                defaultContent: '<a href="" class="editor_edit">Approve</a> / <a href="" class="editor_remove">Reject</a>'
+            }
+        ],
+        ajax: {
+            url: '/api/insta/pending',
+            dataSrc: ''
+        },
+        responsive: true,
+        dom: 'Bfrtip',
+//        columns: [
+//            {data: 'thumbnailUrl'}
+//        ],
+        select: true,
+        buttons: [
+            {extend: 'create', editor: editor},
+            {extend: 'edit', editor: editor},
+            {extend: 'remove', editor: editor}
+        ]
+    });
+
+
+    editor.on('initEdit', function (e, node, data, items, type) {
+        $("#crazy").append("<img  src='" + data.thumbnailUrl + "' style='width:300px; height:300px'/>")
+    });
+    editor.on('open', function (e, mode, action) {
+        $("#imageHolder").empty()
+        $("#crazy").children(":first").detach().appendTo($("#imageHolder"))
+    });
+//    editor.on('edit', function (e, json, data, id) {
+////        table.ajax.reload();
+//        console.log("I need to reload!")
+//    });
+    editor.on('postSubmit', function (e, json, data, id) {
+        table.ajax.reload();
+        console.log("postSubmit")
+    });
+    editor.on('submitError', function (e, json, data, id) {
+//        table.ajax.reload();
+        console.log("error")
+    });
+</script>
+
+</body>
+</html>
