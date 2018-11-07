@@ -60,11 +60,13 @@ public class InstaController {
                 .select(x -> rejected.contains(x.getId()));
     }
 
-    @PUT
+    @GET
     @Path("/reset")
+    @Produces(APPLICATION_JSON)
     @CrossOrigin
-    public void reset() {
+    public boolean reset() {
         instaCache.reset();
+        return true;
     }
 
     @PUT

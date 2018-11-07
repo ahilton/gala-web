@@ -24,7 +24,7 @@ public class FundraisingWebScraper {
     @Autowired
     private InstaCache cache;
 
-    @Scheduled(fixedRate = 63040)
+    @Scheduled(fixedRate = 630400)
     public void pollDonations() throws IOException {
         String instaTag = configCache.getInstaTag();
         log.info("Polling instagram posts with tag [{}]...", instaTag);

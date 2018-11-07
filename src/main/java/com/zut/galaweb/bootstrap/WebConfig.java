@@ -1,6 +1,7 @@
 package com.zut.galaweb.bootstrap;
 
 import com.zut.galaweb.FundraiseController;
+import com.zut.galaweb.event.EventController;
 import com.zut.galaweb.galaconfig.GalaConfigController;
 import com.zut.galaweb.insta.InstaController;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -15,6 +16,7 @@ public class WebConfig extends ResourceConfig {
         register(FundraiseController.class);
         register(InstaController.class);
         register(GalaConfigController.class);
+        register(EventController.class);
         register(CORSFilter.class);
     }
 }
