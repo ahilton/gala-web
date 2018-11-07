@@ -22,11 +22,10 @@ http://localhost:8080/api/fundraise
 
 ## Done
 - mobile friendly (fix safari!)
+- Insta scraping
+- Security (won't do)
+- Save to repo (won't do)
 
 ## TODO
-- Security
 - Check box modes - firework activation (enable / disable)
 - Let's implement a crude event queue -> push events to react display
-- Insta scraping
-- Save to repo
-

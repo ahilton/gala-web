@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+
+    <!--dt 19-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/buttons/1.5.4/css/buttons.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/select/1.2.7/css/select.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="Editor-1.8.0/css/editor.dataTables.css">
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <!--dt 19-->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="Editor-1.8.0/js/dataTables.editor.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.2/js/dataTables.responsive.min.js"></script>
+
+</head>
+<body>
+
+
+<h3>
+    Gala Config Table
+</h3>
+
+<table id="myTable" style="width:101%">
+
+</table>
+
+<script type="text/javascript">
+
+    function buildData(rawData) {
+        var id = Object.keys(rawData.data)[0];
+        return {
+            'value': rawData.data[id]['value']
+        }
+    }
+
+    var editor = new $.fn.dataTable.Editor({
+        ajax: {
+            create: {
+                type: 'POST',
+                url: 'ignore'
+            },
+            edit: {
+                type: 'PUT',
+                url: '/api/config/_id_',
+                deleteBody: false,
+                data: buildData
+            },
+            remove: {
+                type: 'DELETE',
+                url: 'ignore'
+            }
+        },
+
+        idSrc: 'key',
+        table: '#myTable',
+        fields: [
+            {label: 'Key', name: 'key'},
+            {label: 'Value', name: 'value'}
+        ]
+    });
+
+    $('#myTable').DataTable({
+        ajax: {
+            url: '/api/config',
+            dataSrc: ''
+        },
+        responsive: true,
+        dom: 'Bfrtip',
+        columns: [
+            {data: 'key'},
+            {data: 'value'}
+        ],
+        select: true,
+        buttons: [
+            {extend: 'edit', editor: editor}
+        ]
+    });
+</script>
+
+<h3>
+    Modes
+</h3>
+
+<table id="modeTable" style="width:101%">
+
+</table>
+
+<script type="text/javascript">
+
+    function buildModeData(rawData) {
+        var id = Object.keys(rawData.data)[0];
+        return {
+            'value': rawData.data[id]['value']
+        }
+    }
+
+    var modeEditor = new $.fn.dataTable.Editor({
+        ajax: {
+            create: {
+                type: 'POST',
+                url: 'ignore'
+            },
+            edit: {
+                type: 'PUT',
+                url: '/api/config/mode/_id_',
+                deleteBody: false,
+                data: buildModeData
+            },
+            remove: {
+                type: 'PUT',
+                url: '/api/config/mode/_id_',
+                deleteBody: false,
+                data: {
+                    value: 'false'
+                }
+            }
+        },
+
+        idSrc: 'key',
+        table: '#modeTable',
+        fields: [
+            {label: 'Key', name: 'key'},
+            {
+                label: 'Value',
+                name: 'value',
+                type:  "checkbox",
+                options: [
+                    { label: "Enabled", value: true }
+                ],
+                separator: '',
+                unselectedValue: false
+            }
+        ]
+    });
+
+    $('#modeTable').DataTable({
+        ajax: {
+            url: '/api/config/mode',
+            dataSrc: ''
+        },
+        responsive: true,
+        dom: 'Bfrtip',
+        columns: [
+            {data: 'key'},
+            {data: 'value'}
+        ],
+        select: true,
+        buttons: [
+            {extend: 'edit', editor: modeEditor},
+            {extend: 'remove', editor: modeEditor}
+        ]
+    });
+</script>
+
+</body>
+</html>

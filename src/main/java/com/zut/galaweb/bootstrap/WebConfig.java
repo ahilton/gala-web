@@ -1,6 +1,7 @@
 package com.zut.galaweb.bootstrap;
 
 import com.zut.galaweb.FundraiseController;
+import com.zut.galaweb.galaconfig.GalaConfigController;
 import com.zut.galaweb.insta.InstaController;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ public class WebConfig extends ResourceConfig {
     public WebConfig() {
         register(FundraiseController.class);
         register(InstaController.class);
+        register(GalaConfigController.class);
         register(CORSFilter.class);
     }
 }
