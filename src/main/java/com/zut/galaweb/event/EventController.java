@@ -59,6 +59,14 @@ public class EventController {
     }
 
     @GET
+    @Path("/clear")
+    @Produces(APPLICATION_JSON)
+    @CrossOrigin
+    public void clearEvents() {
+        eventList.clear();
+    }
+
+    @GET
     @Path("/create/{event}")
     @Produces(APPLICATION_JSON)
     @CrossOrigin
