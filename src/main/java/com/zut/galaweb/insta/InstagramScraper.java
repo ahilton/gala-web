@@ -16,7 +16,7 @@ import java.util.Iterator;
 
 @Component
 @Slf4j
-public class FundraisingWebScraper {
+public class InstagramScraper {
 
     @Autowired
     private GalaConfigCache configCache;
@@ -24,7 +24,7 @@ public class FundraisingWebScraper {
     @Autowired
     private InstaCache cache;
 
-    @Scheduled(fixedRate = 630400)
+    @Scheduled(fixedRate = 90040)
     public void pollDonations() throws IOException {
         String instaTag = configCache.getInstaTag();
         log.info("Polling instagram posts with tag [{}]...", instaTag);

@@ -33,39 +33,42 @@ public class GalaConfigController {
         private String value;
     }
 
-    private enum ModeConfigType {
-        AUCTION_MODE(adaptBool(GalaConfig::isAuctionModeEnabled), adaptBool(GalaConfig::setAuctionModeEnabled)),
-        TARGET_TICKER_MODE(adaptBool(GalaConfig::isTargetTickerEnabled), adaptBool(GalaConfig::setTargetTickerEnabled)),
-        TOTAL_ON_NIGHT_MODE(adaptBool(GalaConfig::isTotalOnTheNightEnabled), adaptBool(GalaConfig::setTotalOnTheNightEnabled)),
-        LAST_DONATION_MODE(adaptBool(GalaConfig::isLastDonationEnabled), adaptBool(GalaConfig::setLastDonationEnabled)),
-        MESSAGE_MODE(adaptBool(GalaConfig::isMessageEnabled), adaptBool(GalaConfig::setMessageEnabled)),
-        INSTA_MODE(adaptBool(GalaConfig::isInstaEnabled), adaptBool(GalaConfig::setInstaEnabled)),
-        AVA_INFO_MODE(adaptBool(GalaConfig::isAvaInfoEnabled), adaptBool(GalaConfig::setAvaInfoEnabled));
+    @Data
+    @Builder
+    private static class ModeEntry {
+        private String key;
+        private Boolean value;
+    }
 
-        private Function<GalaConfig, String> valueExtractor;
+    private enum ModeConfigType {
+        AUCTION_MODE(GalaConfig::isAuctionModeEnabled, adaptBool(GalaConfig::setAuctionModeEnabled)),
+        TARGET_TICKER_MODE(GalaConfig::isTargetTickerEnabled, adaptBool(GalaConfig::setTargetTickerEnabled)),
+        TOTAL_ON_NIGHT_MODE(GalaConfig::isTotalOnTheNightEnabled, adaptBool(GalaConfig::setTotalOnTheNightEnabled)),
+        LAST_DONATION_MODE(GalaConfig::isLastDonationEnabled, adaptBool(GalaConfig::setLastDonationEnabled)),
+        MESSAGE_MODE(GalaConfig::isMessageEnabled, adaptBool(GalaConfig::setMessageEnabled)),
+        INSTA_MODE(GalaConfig::isInstaEnabled, adaptBool(GalaConfig::setInstaEnabled)),
+        AVA_INFO_MODE(GalaConfig::isAvaInfoEnabled, adaptBool(GalaConfig::setAvaInfoEnabled));
+
+        private Function<GalaConfig, Boolean> valueExtractor;
         private BiConsumer<GalaConfig, String> setter;
 
-        ModeConfigType(Function<GalaConfig, String> valueExtractor, BiConsumer<GalaConfig, String> setter) {
+        ModeConfigType(Function<GalaConfig, Boolean> valueExtractor, BiConsumer<GalaConfig, String> setter) {
             this.valueExtractor = valueExtractor;
             this.setter = setter;
         }
 
-        public ConfigEntry buildConfigEntry(GalaConfig config) {
-            return ConfigEntry.builder()
+        public ModeEntry buildConfigEntry(GalaConfig config) {
+            return ModeEntry.builder()
                     .key(this.name())
                     .value(valueExtractor.apply(config))
                     .build();
-        }
-
-        static private Function<GalaConfig, String> adaptBool(Function<GalaConfig, Boolean> valueExtractor) {
-            return config -> valueExtractor.apply(config).toString();
         }
 
         static private BiConsumer<GalaConfig, String> adaptBool(BiConsumer<GalaConfig, Boolean> valueExtractor) {
             return (config, boolAsString) -> valueExtractor.accept(config, Boolean.parseBoolean(boolAsString));
         }
 
-        static public List<ConfigEntry> extractEntriesFromGalaConfig(GalaConfig config) {
+        static public List<ModeEntry> extractEntriesFromGalaConfig(GalaConfig config) {
             return Lists.mutable.of(ModeConfigType.values())
                     .collect(x -> x.buildConfigEntry(config));
 
@@ -75,6 +78,7 @@ public class GalaConfigController {
             ModeConfigType.valueOf(key).setter.accept(config, value);
         }
     }
+
     private enum ConfigType {
         INSTA_TAG(GalaConfig::getInstaTag, GalaConfig::setInstaTag),
         MESSAGE(GalaConfig::getMessage, GalaConfig::setMessage),
@@ -139,7 +143,7 @@ public class GalaConfigController {
     @Path("/mode")
     @Produces(APPLICATION_JSON)
     @CrossOrigin
-    public List<ConfigEntry> getAllModes() {
+    public List<ModeEntry> getAllModes() {
         return ModeConfigType.extractEntriesFromGalaConfig(configCache.get());
     }
 

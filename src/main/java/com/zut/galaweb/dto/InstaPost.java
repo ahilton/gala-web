@@ -8,8 +8,8 @@ import lombok.Data;
 public class InstaPost {
 
     private String id;
-    private String thumbnailUrl;
-    private String imageUrl;
-    private String owner;
-    private Long takenAt;
+    private transient String thumbnailUrl;
+    private transient String imageUrl;
+    private transient String owner;
+    private transient Long takenAt;
 }

@@ -25,7 +25,8 @@ http://localhost:8080/api/fundraise
 - Insta scraping
 - Security (won't do)
 - Save to repo (won't do)
-
-## TODO
 - Check box modes - firework activation (enable / disable)
 - Let's implement a crude event queue -> push events to react display
+
+## TODO
+
