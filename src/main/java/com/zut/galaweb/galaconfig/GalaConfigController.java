@@ -42,12 +42,16 @@ public class GalaConfigController {
 
     private enum ModeConfigType {
         AUCTION_MODE(GalaConfig::isAuctionModeEnabled, adaptBool(GalaConfig::setAuctionModeEnabled)),
-        TARGET_TICKER_MODE(GalaConfig::isTargetTickerEnabled, adaptBool(GalaConfig::setTargetTickerEnabled)),
+        STATIC_MODE(GalaConfig::isStaticModeEnabled, adaptBool(GalaConfig::setStaticModeEnabled)),
+//        TARGET_TICKER_MODE(GalaConfig::isTargetTickerEnabled, adaptBool(GalaConfig::setTargetTickerEnabled)),
         TOTAL_ON_NIGHT_MODE(GalaConfig::isTotalOnTheNightEnabled, adaptBool(GalaConfig::setTotalOnTheNightEnabled)),
         LAST_DONATION_MODE(GalaConfig::isLastDonationEnabled, adaptBool(GalaConfig::setLastDonationEnabled)),
         MESSAGE_MODE(GalaConfig::isMessageEnabled, adaptBool(GalaConfig::setMessageEnabled)),
         INSTA_MODE(GalaConfig::isInstaEnabled, adaptBool(GalaConfig::setInstaEnabled)),
-        AVA_INFO_MODE(GalaConfig::isAvaInfoEnabled, adaptBool(GalaConfig::setAvaInfoEnabled));
+        AVA_INFO_MODE(GalaConfig::isAvaInfoEnabled, adaptBool(GalaConfig::setAvaInfoEnabled)),
+        INFO_AUCTION_MODE(GalaConfig::isInfoAuctionEnabled, adaptBool(GalaConfig::setInfoAuctionEnabled)),
+        FACTS_MODE(GalaConfig::isFactsEnabled, adaptBool(GalaConfig::setFactsEnabled)),
+        SPONSORS_MODE(GalaConfig::isSponsorsEnabled, adaptBool(GalaConfig::setSponsorsEnabled));
 
         private Function<GalaConfig, Boolean> valueExtractor;
         private BiConsumer<GalaConfig, String> setter;
@@ -82,6 +86,7 @@ public class GalaConfigController {
     private enum ConfigType {
         INSTA_TAG(GalaConfig::getInstaTag, GalaConfig::setInstaTag),
         MESSAGE(GalaConfig::getMessage, GalaConfig::setMessage),
+        DELAY(adaptInt(GalaConfig::getDelay), adaptInt(GalaConfig::setDelay)),
         STARTING_TOTAL(adaptInt(GalaConfig::getStartingTotal), adaptInt(GalaConfig::setStartingTotal)),
         STARTING_DONATIONS(adaptInt(GalaConfig::getStartingDonations), adaptInt(GalaConfig::setStartingDonations)),
         TOTAL_DONATIONS(adaptInt(GalaConfig::getTotalDonations), adaptInt(GalaConfig::setTotalDonations)),

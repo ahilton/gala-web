@@ -7,12 +7,16 @@ import java.util.function.BiConsumer;
 public enum GalaModes {
 
     AUCTION(GalaConfig::setAuctionModeEnabled),
-    TARGET_TICKER(GalaConfig::setTargetTickerEnabled),
+    STATIC(GalaConfig::setAuctionModeEnabled),
+//    TARGET_TICKER(GalaConfig::setTargetTickerEnabled),
     TOTAL_ON_NIGHT(GalaConfig::setTotalOnTheNightEnabled),
     LAST_DONATION(GalaConfig::setLastDonationEnabled),
     MESSAGE(GalaConfig::setMessageEnabled),
     INSTA(GalaConfig::setInstaEnabled),
-    AVA_INFO(GalaConfig::setAvaInfoEnabled);
+    AVA_INFO(GalaConfig::setAvaInfoEnabled),
+    INFO_AUCTION(GalaConfig::setInfoAuctionEnabled),
+    FACTS(GalaConfig::setFactsEnabled),
+    SPONSORS(GalaConfig::setSponsorsEnabled);
 
     private BiConsumer<GalaConfig, Boolean> galaConfigSetter;
 

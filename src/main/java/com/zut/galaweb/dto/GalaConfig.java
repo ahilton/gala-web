@@ -20,11 +20,14 @@ public class GalaConfig {
     @Builder.Default
     private int startingTotal = 220_000;
 
+    @Builder.Default
+    private int delay = 15;
+
     // Go fund me amounts
     @Builder.Default
-    private int startingDonations = 200_000;
+    private int startingDonations = 202_000;
     @Builder.Default
-    private int totalDonations = 230_000;
+    private int totalDonations = 205_000;
 
     // Target (in AUD)
     @Builder.Default
@@ -32,21 +35,29 @@ public class GalaConfig {
     @Builder.Default
     private String highTargetName = "NYC Relocation";
     @Builder.Default
-    private int lowTargetAmount = 300_000;
+    private int lowTargetAmount = 290_000;
     @Builder.Default
-    private int highTargetAmount = 350_000;
+    private int highTargetAmount = 300_000;
 
     // Modes
     @Builder.Default
     private boolean auctionModeEnabled = false;
     @Builder.Default
-    private boolean targetTickerEnabled = true;
+    private boolean staticModeEnabled = false;
+//    @Builder.Default
+//    private boolean targetTickerEnabled = false;
     @Builder.Default
-    private boolean totalOnTheNightEnabled = true;
+    private boolean totalOnTheNightEnabled = false;
     @Builder.Default
     private boolean lastDonationEnabled = false;
     @Builder.Default
     private boolean messageEnabled = false;
+    @Builder.Default
+    private boolean infoAuctionEnabled = true;
+    @Builder.Default
+    private boolean factsEnabled = true;
+    @Builder.Default
+    private boolean sponsorsEnabled = true;
     @Builder.Default
     private boolean instaEnabled = true;
     @Builder.Default
