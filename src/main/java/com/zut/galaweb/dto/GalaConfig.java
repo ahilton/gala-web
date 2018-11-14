@@ -11,7 +11,7 @@ public class GalaConfig {
     private String instaTag = "avasjourney";
 
     @Builder.Default
-    private String message = "We love you Ava!";
+    private String message = "";
 
     // Total raised on the night =
     //    starting total +
