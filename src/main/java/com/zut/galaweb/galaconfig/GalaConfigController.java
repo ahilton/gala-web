@@ -51,7 +51,9 @@ public class GalaConfigController {
         AVA_INFO_MODE(GalaConfig::isAvaInfoEnabled, adaptBool(GalaConfig::setAvaInfoEnabled)),
         INFO_AUCTION_MODE(GalaConfig::isInfoAuctionEnabled, adaptBool(GalaConfig::setInfoAuctionEnabled)),
         FACTS_MODE(GalaConfig::isFactsEnabled, adaptBool(GalaConfig::setFactsEnabled)),
-        SPONSORS_MODE(GalaConfig::isSponsorsEnabled, adaptBool(GalaConfig::setSponsorsEnabled));
+        SPONSORS_MODE(GalaConfig::isSponsorsEnabled, adaptBool(GalaConfig::setSponsorsEnabled)),
+        KERRY_MODE(GalaConfig::isKerryEnabled, adaptBool(GalaConfig::setKerryEnabled)),
+        MBB_MODE(GalaConfig::isMbbEnabled, adaptBool(GalaConfig::setMbbEnabled));
 
         private Function<GalaConfig, Boolean> valueExtractor;
         private BiConsumer<GalaConfig, String> setter;

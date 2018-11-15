@@ -25,9 +25,9 @@ public class GalaConfig {
 
     // Go fund me amounts
     @Builder.Default
-    private int startingDonations = 202_000;
+    private int startingDonations = 203_000;
     @Builder.Default
-    private int totalDonations = 205_000;
+    private int totalDonations = 203_000;
 
     // Target (in AUD)
     @Builder.Default
@@ -53,14 +53,18 @@ public class GalaConfig {
     @Builder.Default
     private boolean messageEnabled = false;
     @Builder.Default
-    private boolean infoAuctionEnabled = true;
+    private boolean infoAuctionEnabled = false;
     @Builder.Default
-    private boolean factsEnabled = true;
+    private boolean factsEnabled = false;
     @Builder.Default
-    private boolean sponsorsEnabled = true;
+    private boolean sponsorsEnabled = false;
     @Builder.Default
-    private boolean instaEnabled = true;
+    private boolean instaEnabled = false;
     @Builder.Default
-    private boolean avaInfoEnabled = true;
+    private boolean avaInfoEnabled = false;
+    @Builder.Default
+    private boolean kerryEnabled = false;
+    @Builder.Default
+    private boolean mbbEnabled = false;
 
 }

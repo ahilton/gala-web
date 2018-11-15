@@ -16,7 +16,9 @@ public enum GalaModes {
     AVA_INFO(GalaConfig::setAvaInfoEnabled),
     INFO_AUCTION(GalaConfig::setInfoAuctionEnabled),
     FACTS(GalaConfig::setFactsEnabled),
-    SPONSORS(GalaConfig::setSponsorsEnabled);
+    SPONSORS(GalaConfig::setSponsorsEnabled),
+    KERRY(GalaConfig::setKerryEnabled),
+    MBB(GalaConfig::setMbbEnabled);
 
     private BiConsumer<GalaConfig, Boolean> galaConfigSetter;
 
