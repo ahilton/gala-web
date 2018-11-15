@@ -67,4 +67,19 @@ public class GalaConfig {
     @Builder.Default
     private boolean mbbEnabled = false;
 
+    public void allOff(){
+        auctionModeEnabled = false;
+        staticModeEnabled = false;
+        totalOnTheNightEnabled = false;
+        lastDonationEnabled = false;
+        messageEnabled = false;
+        infoAuctionEnabled = false;
+        factsEnabled = false;
+        sponsorsEnabled = false;
+        instaEnabled = false;
+        avaInfoEnabled = false;
+        kerryEnabled = false;
+        mbbEnabled = false;
+    }
+
 }

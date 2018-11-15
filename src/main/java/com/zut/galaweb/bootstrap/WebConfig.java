@@ -1,6 +1,7 @@
 package com.zut.galaweb.bootstrap;
 
 import com.zut.galaweb.FundraiseController;
+import com.zut.galaweb.RunController;
 import com.zut.galaweb.event.EventController;
 import com.zut.galaweb.galaconfig.GalaConfigController;
 import com.zut.galaweb.insta.InstaController;
@@ -17,6 +18,7 @@ public class WebConfig extends ResourceConfig {
         register(InstaController.class);
         register(GalaConfigController.class);
         register(EventController.class);
+        register(RunController.class);
         register(CORSFilter.class);
     }
 }
