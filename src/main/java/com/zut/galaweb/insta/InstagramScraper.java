@@ -3,6 +3,7 @@ package com.zut.galaweb.insta;
 import com.zut.galaweb.dto.InstaPost;
 import com.zut.galaweb.galaconfig.GalaConfigCache;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.collections.impl.utility.ArrayIterate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -27,34 +28,43 @@ public class InstagramScraper {
     @Scheduled(fixedRate = 90040)
     public void pollDonations() throws IOException {
         String instaTag = configCache.getInstaTag();
-        log.info("Polling instagram posts with tag [{}]...", instaTag);
-        Document doc = Jsoup.connect("https://www.instagram.com/explore/tags/" + instaTag + "/?__a=1")
-                .ignoreContentType(true)
-                .userAgent("Mozilla")
-                .timeout(5000)
-                .get();
+        ArrayIterate.forEach(instaTag.split(","), this::pollInstagramForTag);
+    }
 
-        String jsonString = doc.select("body").text();
-        JSONObject jsonObj = new JSONObject(jsonString);
-        JSONArray recentPosts = jsonObj
-                .getJSONObject("graphql")
-                .getJSONObject("hashtag")
-                .getJSONObject("edge_hashtag_to_media")
-                .getJSONArray("edges");
+    private void pollInstagramForTag(String tag) {
+        String hashtag = tag.trim();
+        try {
+            log.info("Polling instagram posts with tag [{}]...", hashtag);
+            Document doc = Jsoup.connect("https://www.instagram.com/explore/tags/" + hashtag + "/?__a=1")
+                    .ignoreContentType(true)
+                    .userAgent("Mozilla")
+                    .timeout(5000)
+                    .get();
 
-        Iterator var2 = recentPosts.iterator();
+            String jsonString = doc.select("body").text();
+            JSONObject jsonObj = new JSONObject(jsonString);
+            JSONArray recentPosts = jsonObj
+                    .getJSONObject("graphql")
+                    .getJSONObject("hashtag")
+                    .getJSONObject("edge_hashtag_to_media")
+                    .getJSONArray("edges");
 
-        while (true) {
-            while (var2.hasNext()) {
-                Object element = var2.next();
-                if (element != null && !JSONObject.NULL.equals(element)) {
-                    if (element instanceof JSONObject) {
-                        processRecentPost((JSONObject) element);
+            Iterator var2 = recentPosts.iterator();
+
+            while (true) {
+                while (var2.hasNext()) {
+                    Object element = var2.next();
+                    if (element != null && !JSONObject.NULL.equals(element)) {
+                        if (element instanceof JSONObject) {
+                            processRecentPost((JSONObject) element);
+                        }
                     }
                 }
+                log.info("finished parsing recent instagram posts");
+                return;
             }
-            log.info("finished parsing recent instagram posts");
-            return;
+        } catch (Exception e) {
+            log.warn("Failed to poll for " + hashtag+". "+e.getMessage());
         }
     }
 

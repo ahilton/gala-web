@@ -8,7 +8,7 @@ import lombok.Data;
 public class GalaConfig {
 
     @Builder.Default
-    private String instaTag = "avasjourney";
+    private String instaTag = "avasjourney,getavatoNYC";
 
     @Builder.Default
     private String message = "";
